@@ -3,7 +3,7 @@ task :build do
 	#getting gem info
 	gemspec = eval(File.read("marketing_api.gemspec"))
 	system "gem build marketing_api.gemspec"
-	system "gem install marketing_api-#{gemspec.version.to_s}.gem --no-ri --no-rdoc"
+	#system "gem install marketing_api-#{gemspec.version.to_s}.gem --no-ri --no-rdoc"
 end
 
 #installation for development purposes
