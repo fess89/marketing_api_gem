@@ -1,7 +1,7 @@
 require 'webmock/rspec'
-require 'marketing_api'
 require 'json'
 require 'spec_helper'
+require 'marketing_api'
 
 describe MarketingAPI, "#marketing_remote_api" do
 
