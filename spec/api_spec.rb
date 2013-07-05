@@ -10,29 +10,35 @@ describe MarketingAPI, "#marketing_remote_api" do
 
 	success_reply = 
 	{
-		"id"=>21, "email"=>"chyrkov@kth.se", 
-		"mobile"=>"380632721593", "first_name"=>"Oleksii", 
-		"last_name"=>"Chyrkov", "permission_type"=>"one-time", 
-		"channel"=>"sms", "company_name"=>"Apple", 
-		"message"=>"Found optin", "code"=>200
+		"id" => 21, "email" => "chyrkov@kth.se", 
+		"mobile" => "380632721593", "first_name" => "Oleksii", 
+		"last_name" => "Chyrkov", "permission_type" => "one-time", 
+		"channel" => "sms", "company_name" => "Apple", 
+		"message" => "Found optin", "code" => 200
 	}
 
 	not_found_reply = 
 	{
-		"code"=> 404, 
-		"message"=>"Optin not found"
+		"code" => 404, 
+		"message" => "Optin not found"
 	}
 
 	bad_request_reply = 
 	{
-		"code"=> 401, 
-		"message"=>"Bad request"
+		"code" => 401, 
+		"message" =>"Bad request"
 	}
 
 	already_exists_reply = 
 	{
-		"code"=> 302, 
-		"message"=>"Bad request"
+		"code" => 302, 
+		"message" =>"Bad request"
+	}
+
+	internal_error_reply = 
+	{
+		"code" => 503,
+		"message" => "Internal server error"
 	}
 
 	params = 
@@ -179,6 +185,21 @@ describe MarketingAPI, "#marketing_remote_api" do
 	 												.to_return(:status => 302,
 															   :body => already_exists_reply)
 		api.update_optin(params.to_json).should eq(nil)
+	end
+
+	it "should return nil when a create request returns 503 Internal Server Error" do
+		stub_request(:any, api.server+":80/create").to_return(:status => 503, :body => internal_error_reply)
+		api.create_optin(params.to_json).should eq(nil)
+	end
+
+	it "should return nil when an update request returns 503 Internal Server Error" do
+		stub_request(:any, api.server+":80/update").to_return(:status => 503, :body => internal_error_reply)
+		api.update_optin(params.to_json).should eq(nil)
+	end
+
+	it "should return nil when a deactivate request returns 503 Internal Server Error" do
+		stub_request(:any, api.server+":80/deactivate/#{params[:id]}").to_return(:status => 503, :body => internal_error_reply)
+		api.deactivate_optin(params[:id]).should eq(nil)
 	end
 
 end
