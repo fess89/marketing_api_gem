@@ -3,7 +3,7 @@ require 'marketing_api'
 
 Gem::Specification.new do |s|
   s.name          = 'marketing_api'
-  s.version       = '0.0.1'
+  s.version       = '0.0.3'
   s.date          = '2013-07-02'
   s.summary       = "Working with Marketing class by means of remote API"
   s.description   = "Test task given by Alexander Simonov"
